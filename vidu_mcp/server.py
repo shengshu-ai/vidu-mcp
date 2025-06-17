@@ -47,6 +47,29 @@ api_client = ViduAPIClient(api_key, api_host)
     description="""Generate a video from a prompt.
 
     COST WARNING: This tool makes an API call to Vidu which may incur costs. Only use when explicitly requested by the user.
+    
+     Args:
+        model (str, required): The model to use. Values range ["viduq1","vidu1.5"], with "viduq1" being the default.
+        prompt (str, required): A textual description for video generation, with a maximum length of 1500 characters
+        style (str, optional): The style of output video. Defaults to general, Accepted values: general anime
+        duration (int, optional): Video duration. Default values vary by model:
+                                  - viduq1: default 5s, available: 5
+                                  - vidu1.5: default 4s, available: 4, 8
+        seed (int, optional): Random seed
+                              - Defaults to a random seed number
+                              - Manually set values will override the default random seed
+        aspect_ratio (str, optional): The aspect ratio of the output video. Values range ["1:1", "16:9","9:16"], with "16:9" being the default.
+        resolution (str, optional): Resolution. Default values vary by model & duration:
+                                    - viduq1 (5s): default 1080p, available: 1080p
+                                    - vidu1.5 (4s): default 360p, available: 360p, 720p, 1080p
+                                    - vidu1.5 (8s): default 720p, available: 720p
+        movement_amplitude (str, optional): The movement amplitude of objects in the frame.Defaults to auto, accepted value: auto small medium large
+        bgm (bool, optional): Whether to add background music to the generated video.
+                              - Default: false. Acceptable values: true, false.
+                              - When true, the system will automatically add a suitable BGM.
+                              - Only when the final generated video duration is 4 seconds is adding BGM supported.
+    Returns:
+        task_id and video_url
     """
 )
 def generate_text_to_video1(
@@ -99,6 +122,28 @@ def generate_text_to_video1(
     description="""Generate a video from a pic and prompt.
 
     COST WARNING: This tool makes an API call to Vidu which may incur costs. Only use when explicitly requested by the user.
+    
+    Args:
+        image (str, required): An image to be used as the start frame of the generated video
+        model (str, required): The model to use. Values range ["viduq1","vidu1.5","vidu2.0"], with "viduq1" being the default.
+        prompt (str, optional): A textual description for video generation, with a maximum length of 1500 characters
+        duration (int, optional): Video duration. Default values vary by model:
+                                  - viduq1: default 5s, available: 5
+                                  - vidu2.0 and vidu1.5: default 4s, available: 4, 8
+        seed (int, optional): Random seed
+                              - Defaults to a random seed number
+                              - Manually set values will override the default random seed
+        resolution (str, optional): Resolution. Default values vary by model & duration:
+                                    - viduq1 (5s): default 1080p, available: 1080p
+                                    - vidu2.0 and vidu1.5 (4s): default 360p, options: 360p, 720p, 1080p
+                                    - vidu2.0 and vidu1.5 (8s): default 720p, options: 720p
+        movement_amplitude (str, optional): The movement amplitude of objects in the frame.Defaults to auto, accepted value: auto small medium large
+        bgm (bool, optional): Whether to add background music to the generated video.
+                              - Default: false. Acceptable values: true, false.
+                              - When true, the system will automatically add a suitable BGM.
+                              - Only when the final generated video duration is 4 seconds is adding BGM supported.
+    Returns:
+        task_id and video_url
     """
 )
 def generate_img_to_video(
@@ -151,6 +196,32 @@ def generate_img_to_video(
     description="""Generate a video from a pic and prompt.
 
     COST WARNING: This tool makes an API call to Vidu which may incur costs. Only use when explicitly requested by the user.
+    
+    Args:
+        images (str list, required): The model will use the provided images as references to generate a video with consistent subjects
+                                     For fields that accept images:
+                                     -Accepts 1 to 3 images.
+        prompt (str, required): A textual description for video generation, with a maximum length of 1500 characters
+        model (str, required): The model to use. Values range ["vidu1.5","vidu2.0"], with "vidu2.0" being the default.
+        duration (int, optional): Video duration parameter, with default values depending on the model:
+                                  - vidu2.0: Default is 4 seconds, available option: 4
+                                  - vidu1.5: Default is 4 seconds, available options: 4, 8
+        seed (int, optional): Random seed
+                              - Defaults to a random seed number
+                              - Manually set values will override the default random seed
+        aspect_ratio (str, optional): The aspect ratio of the output video. Defaults to 16:9, accepted: 16:9 9:16 1:1
+        resolution (str, optional): The resolution of the output video
+                                    Defaults to 360p , accepted value: 360p 720p 1080p
+                                    - Model vidu1.5 duration 4 accepted: 360p 720p 1080p
+                                    - Model vidu1.5 duration 8accepted: 720p
+                                    - Model vidu2.0 duration 4 accepted: 360p 720p
+        movement_amplitude (str, optional): The movement amplitude of objects in the frame.Defaults to auto, accepted value: auto small medium large
+        bgm (bool, optional): Whether to add background music to the generated video.
+                              - Default: false. Acceptable values: true, false.
+                              - When true, the system will automatically add a suitable BGM.
+                              - Only when the final generated video duration is 4 seconds is adding BGM supported.
+    Returns:
+        task_id and video_url
     """
 )
 def generate_reference2video_to_video(
@@ -207,6 +278,27 @@ def generate_reference2video_to_video(
     description="""Generate a video from a pic and prompt.
 
     COST WARNING: This tool makes an API call to Vidu which may incur costs. Only use when explicitly requested by the user.
+    Args:
+        images (str list, required): Two images: first is start frame, second is end frame.
+        model (str, required): The model to use. Values range ["vidu1.5","vidu2.0","viduq1-classic","viduq1"], with "viduq1" being the default.
+        prompt (str, optional): A textual description for video generation, with a maximum length of 1500 characters
+        duration (int, optional): Video duration. Default values vary by model:
+                                  - viduq1 and viduq1-classic: default 5s, available: 5
+                                  - vidu2.0 and vidu1.5: default 4s, available: 4, 8
+        seed (int, optional): Random seed
+                              - Defaults to a random seed number
+                              - Manually set values will override the default random seed
+        resolution (str, optional): Resolution (based on model & duration):
+                                    - viduq1 and viduq1-classic(5s): default 1080p, options: 1080p
+                                    - vidu2.0 and vidu1.5 (4s): default 360p, options: 360p, 720p, 1080p
+                                    - vidu2.0 and vidu1.5 (8s): default 720p, options: 720p
+        movement_amplitude (str, optional): The movement amplitude of objects in the frame.Defaults to auto, accepted value: auto small medium large
+        bgm (bool, optional): Whether to add background music to the generated video.
+                              - Default: false. Acceptable values: true, false.
+                              - When true, the system will automatically add a suitable BGM.
+                              - Only when the final generated video duration is 4 seconds is adding BGM supported.
+    Returns:
+        task_id and video_url
     """
 )
 def generate_startend2video_to_video(
@@ -253,6 +345,7 @@ def generate_startend2video_to_video(
     except Exception as e:
         logger.error(f"Text-to-video generation error: {str(e)}")
         return f"Error generating video: {str(e)}"
+
 
 def query_video(
         task_id: int,
