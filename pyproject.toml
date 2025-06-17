@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-zzzero = "vidu_mcp.server:main"
+vidu_mcp = "vidu_mcp.server:main"
 
 [build-system]
 requires = ["hatchling"]
