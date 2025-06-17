@@ -12,9 +12,9 @@ Vidu MCP is a tool that allows you to access Vidu latest video generation models
 ## Key Features
 
 - **Text-to-Video Generation**: Generate creative videos using text prompts
-- **Image-to-Video Generation**: Generate creative videos using text prompts
-- **Reference-to-Video Generation**: Generate creative videos using text prompts
-- **StartEnd-to-Video Generation**: Generate creative videos using text prompts
+- **Image-to-Video Generation**: Generate creative videos using text and image prompts
+- **Reference-to-Video Generation**: Generate creative videos using text and image prompts
+- **StartEnd-to-Video Generation**: Generate creative videos using text and image prompts
 
 
 ## System Components
