@@ -72,7 +72,7 @@ api_client = ViduAPIClient(api_key, api_host)
         task_id and video_url
     """
 )
-def generate_text_to_video1(
+def generate_text_to_video(
         model: str = "viduq1",
         prompt: str = "",
         style: str = "general",
