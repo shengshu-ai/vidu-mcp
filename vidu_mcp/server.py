@@ -347,6 +347,82 @@ def generate_startend2video_to_video(
         return f"Error generating video: {str(e)}"
 
 
+@mcp.tool(
+    description="""Generate a video from a template.
+
+    COST WARNING: This tool makes an API call to Vidu which may incur costs. Only use when explicitly requested by the user.
+
+    Args:
+        template (str, required): AI video template. Different templates have different call parameters.
+        images (str list, required): Images
+        prompt (str, optional): A textual description for video generation, with a maximum length of 1500 characters
+        seed (int, optional): Random seed
+                              - Defaults to a random seed number
+                              - Manually set values will override the default random seed
+        aspect_ratio (str, optional): The aspect ratio of the output video. Defaults to 16:9, accepted: 16:9 9:16 1:1
+                                       - Different templates accepted different aspect ratio
+        area (str, optional): Exotic Princess style control field only for template exotic_princess,
+                              Default：auto, accepts：denmark,uk,africa,china,mexico,switzerland,russia,italy,korea,thailand,india,japan
+        beast (str, optional): beast companion style control field only for template beast_companion，
+                               Default auto, accepts：bear,tiger,elk,snake,lion,wolf
+        bgm (bool, optional): Whether to add background music to the generated video.
+                              - Default: false. Acceptable values: true, false.
+                              - When true, the system will automatically add a suitable BGM.
+                              - Only when the final generated video duration is 4 seconds is adding BGM supported.
+    Returns:
+        task_id and video_url
+    """
+)
+def generate_template_to_video(
+        template: str,
+        images: list[str],
+        prompt: str = "",
+        seed: int = 0,
+        aspect_ratio: str = "",
+        area: str = "auto",
+        beast: str = "auto",
+        bgm: bool = False,
+) -> str:
+    try:
+        if not template:
+            raise ViduRequestError("template is required")
+        if not images:
+            raise ViduRequestError("images is required")
+
+        input_images = del_input_images(images)
+
+        # step1: submit video generation task
+        payload = {
+            "template": template,
+            "images": input_images,
+            "prompt": prompt,
+            "seed": seed,
+            "aspect_ratio": aspect_ratio,
+            "bgm": bgm,
+        }
+        if template is "exotic_princess":
+            payload["area"] = area
+        if template is "beast_companion":
+            payload["beast"] = beast
+
+        response_data = api_client.post("/ent/v2/template2video", json=payload)
+        task_id = response_data.get("task_id")
+        if not task_id:
+            raise ViduRequestError("Failed to get task_id from response")
+
+        return query_video(task_id=task_id)
+
+    except ViduAPIError as e:
+        logger.error(f"Parameter validation error: {str(e)}")
+        return f"Error: {str(e)}"
+    except (IOError, requests.RequestException) as e:
+        logger.error(f"Parameter validation error: {str(e)}")
+        return f"Error: {str(e)}"
+    except Exception as e:
+        logger.error(f"Text-to-video generation error: {str(e)}")
+        return f"Error generating video: {str(e)}"
+
+
 def query_video(
         task_id: int,
 ) -> str:
