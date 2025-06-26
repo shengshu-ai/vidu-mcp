@@ -1,0 +1,21 @@
+[project]
+name = "vidu-mcp"
+version = "0.1.2"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { email = "yuchen.zhao@shengshu.ai" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "dotenv>=0.9.9",
+    "mcp>=1.9.4",
+    "requests>=2.32.4",
+]
+
+[project.scripts]
+vidu-mcp = "vidu_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
